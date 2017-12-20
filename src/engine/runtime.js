@@ -103,7 +103,7 @@ let rendererDrawProfilerId = -1;
  * @constructor
  */
 class Runtime extends EventEmitter {
-    constructor () {
+    constructor (customPakeages = {}) {
         super();
 
         /**
@@ -249,7 +249,8 @@ class Runtime extends EventEmitter {
         this.redrawRequested = false;
 
         // Register all given block packages.
-        this._registerBlockPackages();
+        this._registerBlockPackages(defaultBlockPackages);
+        this._registerBlockPackages(customPakeages)
 
         // Register and initialize "IO devices", containers for processing
         // I/O related data.
@@ -406,7 +407,7 @@ class Runtime extends EventEmitter {
      * @todo Prefix opcodes with package name.
      * @private
      */
-    _registerBlockPackages () {
+    _registerBlockPackages (defaultBlockPackages) {
         for (const packageName in defaultBlockPackages) {
             if (defaultBlockPackages.hasOwnProperty(packageName)) {
                 // @todo pass a different runtime depending on package privilege?
@@ -942,9 +943,14 @@ class Runtime extends EventEmitter {
 
         // Consider all scripts, looking for hats with opcode `requestedHatOpcode`.
         this.allScriptsDo((topBlockId, target) => {
+            // 这里通过检查每一个block的opcode(表示该block的类型)
             const blocks = target.blocks;
             const block = blocks.getBlock(topBlockId);
             const potentialHatOpcode = block.opcode;
+            // 相等的话表示当前编程区域有符合当前请求的block
+            // 如点击greenflag按钮, 此时requestedHatOpcode为event_whenflagclicked
+            // 而greenflag的opcode也是event_whenflagclicked,
+            // 故如果编程区域有greenflag, 即会执行接下去的
             if (potentialHatOpcode !== requestedHatOpcode) {
                 // Not the right hat.
                 return;

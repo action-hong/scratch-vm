@@ -352,6 +352,7 @@ window.onload = function () {
     });
     document.getElementById('turbomode').addEventListener('change', () => {
         const turboOn = document.getElementById('turbomode').checked;
+        // 设置为true, 循环不会导致重绘
         vm.setTurboMode(turboOn);
     });
     document.getElementById('compatmode').addEventListener('change',

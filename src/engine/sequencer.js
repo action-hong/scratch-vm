@@ -140,6 +140,7 @@ class Sequencer {
             }
         }
         // Filter inactive threads from `this.runtime.threads`.
+        // 把还没执行完的thread找出来
         numActiveThreads = 0;
         for (let i = 0; i < this.runtime.threads.length; i++) {
             const thread = this.runtime.threads[i];
@@ -148,6 +149,7 @@ class Sequencer {
                 numActiveThreads++;
             }
         }
+        // 开始过滤了, 只剩下还未结束的线程
         this.runtime.threads.length = numActiveThreads;
 
         // Filter undefined and null values from `doneThreads`.
