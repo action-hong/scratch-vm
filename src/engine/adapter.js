@@ -14,6 +14,7 @@ const domToBlock = function (blockDOM, blocks, isTopBlock, parent) {
     // Block skeleton.
     const block = {
         id: blockDOM.attribs.id, // Block ID
+        // 这里复制opcode
         opcode: blockDOM.attribs.type, // For execution, "event_whengreenflag".
         inputs: {}, // Inputs to this block and the blocks they point to.
         fields: {}, // Fields on this block and their values.
